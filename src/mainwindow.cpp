@@ -134,6 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_mainMenu(nullptr),
       m_buyOrManageSubscriptionAction(new QAction(this)),
       m_hideToTrayAction(nullptr),
+      collectUsageMetricsAction(nullptr),
       m_checkUpdatesTimer(new QTimer(this))
 {
     m_ui->setupUi(this);
@@ -1657,6 +1658,9 @@ void MainWindow::restoreStates()
         setupTrayIcon();
     }
 
+    setCollection(m_settingsDatabase->value(QStringLiteral("collectUsageMetrics"), true).toBool());
+    collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
+
     if (m_settingsDatabase->value(QStringLiteral("windowGeometry"), "NULL") != "NULL")
         restoreGeometry(m_settingsDatabase->value(QStringLiteral("windowGeometry")).toByteArray());
 
@@ -2021,14 +2025,13 @@ void MainWindow::setupGlobalSettingsMenu()
     autostartAction->setChecked(m_autostart.isAutostart());
 
     // Collect usage metrics toggle
-    QAction *collectUsageMetricsAction = metricsMenu->addAction(tr("Collect &usage metrics"));
+    collectUsageMetricsAction = metricsMenu->addAction(tr("Collect &usage metrics"));
     collectUsageMetricsAction->setCheckable(true);
-    collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
 
     connect(collectUsageMetricsAction, &QAction::toggled, this, [this](bool checked) {
         m_collectUsageMetrics = checked;
+        m_settingsDatabase->setValue(QStringLiteral("collectUsageMetrics"), checked); // update value
     });
-
 
     // hide to tray
     m_hideToTrayAction = m_mainMenu.addAction(tr("&Hide to tray"));
@@ -4012,6 +4015,12 @@ void MainWindow::setHideToTray(bool enabled)
 {
     m_hideToTray = enabled;
     m_settingsDatabase->setValue(QStringLiteral("hideToTray"), enabled);
+}
+
+void MainWindow::setCollection(bool enabled)
+{
+    m_collectUsageMetrics = enabled;
+    m_settingsDatabase->setValue(QStringLiteral("collectUsageMetrics"), enabled);
 }
 
 /*!

@@ -202,8 +202,7 @@ private:
     bool m_alwaysStayOnTop;
     bool m_useNativeWindowFrame;
     bool m_hideToTray;
-    // variables used for metrics collection
-    bool m_collectUsageMetrics = false;
+    bool m_collectUsageMetrics;
 
     QString m_styleSheet;
 
@@ -254,6 +253,7 @@ private:
     QMenu m_mainMenu;
     QAction *m_buyOrManageSubscriptionAction;
     QAction *m_hideToTrayAction;
+    QAction *collectUsageMetricsAction;
     QTimer m_checkUpdatesTimer;
 
     bool alreadyAppliedFormat(const QString &formatChars);
@@ -347,6 +347,7 @@ private slots:
     void setHeading(int level);
     void setUseNativeWindowFrame(bool useNativeWindowFrame);
     void setHideToTray(bool enabled);
+    void setCollection(bool enabled);
     void toggleStayOnTop();
     void onSearchEditReturnPressed();
     void deleteSelectedNote();
