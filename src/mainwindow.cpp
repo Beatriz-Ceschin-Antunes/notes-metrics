@@ -1986,6 +1986,10 @@ void MainWindow::setupGlobalSettingsMenu()
     importExportNotesMenu->setToolTipsVisible(true);
     m_mainMenu.setToolTipsVisible(true);
 
+    // Metrics menu
+    QMenu *metricsMenu = m_mainMenu.addMenu(tr("&Metrics"));
+    metricsMenu->setToolTipsVisible(true);
+
     auto *closeMenu = new QShortcut(Qt::Key_F10, &m_mainMenu);
     closeMenu->setContext(Qt::ApplicationShortcut);
     connect(closeMenu, &QShortcut::activated, &m_mainMenu, &QMenu::close);
@@ -2016,8 +2020,8 @@ void MainWindow::setupGlobalSettingsMenu()
     autostartAction->setCheckable(true);
     autostartAction->setChecked(m_autostart.isAutostart());
 
-    // Collect usage metrics
-    QAction *collectUsageMetricsAction = m_mainMenu.addAction(tr("Collect &usage metrics"));
+    // Collect usage metrics toggle
+    QAction *collectUsageMetricsAction = metricsMenu->addAction(tr("Collect &usage metrics"));
     collectUsageMetricsAction->setCheckable(true);
     collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
 
