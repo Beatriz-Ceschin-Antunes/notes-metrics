@@ -202,6 +202,8 @@ private:
     bool m_alwaysStayOnTop;
     bool m_useNativeWindowFrame;
     bool m_hideToTray;
+    // variables used for metrics collection
+    bool m_collectUsageMetrics = false;
 
     QString m_styleSheet;
 

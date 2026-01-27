@@ -5,7 +5,8 @@
  ***************************************************************************************/
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "src/ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 #include "qxtglobalshortcut.h"
 #include "treeviewlogic.h"
 #include "listviewlogic.h"
@@ -2014,6 +2015,16 @@ void MainWindow::setupGlobalSettingsMenu()
     connect(autostartAction, &QAction::triggered, this, [=]() { m_autostart.setAutostart(autostartAction->isChecked()); });
     autostartAction->setCheckable(true);
     autostartAction->setChecked(m_autostart.isAutostart());
+
+    // Collect usage metrics
+    QAction *collectUsageMetricsAction = m_mainMenu.addAction(tr("Collect &usage metrics"));
+    collectUsageMetricsAction->setCheckable(true);
+    collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
+
+    connect(collectUsageMetricsAction, &QAction::toggled, this, [this](bool checked) {
+        m_collectUsageMetrics = checked;
+    });
+
 
     // hide to tray
     m_hideToTrayAction = m_mainMenu.addAction(tr("&Hide to tray"));
