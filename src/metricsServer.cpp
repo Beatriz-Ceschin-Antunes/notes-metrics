@@ -1,12 +1,14 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include "Metrics.h"
+#include <MetricsServer.h>
 
-class MetricsServer : public QObject {
-public:
-    MetricsServer(QObject* parent = nullptr) : QObject(parent) {
-        connect(&server, &QTcpServer::newConnection, this, [this]() {
-            auto* sock = server.nextPendingConnection();
+MetricsServer::MetricsServer(quint16 port, QObject* parent)
+    : QObject(parent),
+      m_server(new QTcpServer(this))
+{
+        connect(m_server, &QTcpServer::newConnection, this, [this]() {
+            auto* sock = m_server->nextPendingConnection();
             connect(sock, &QTcpSocket::readyRead, sock, [sock]() {
                 const QByteArray body = Metrics::instance().toPrometheusText().toUtf8();
                 QByteArray resp =
@@ -18,9 +20,5 @@ public:
                 sock->disconnectFromHost();
             });
         });
-        server.listen(QHostAddress::LocalHost, 9100);
-    }
-
-private:
-    QTcpServer server;
+        m_server->listen(QHostAddress::LocalHost, 9100);
 };

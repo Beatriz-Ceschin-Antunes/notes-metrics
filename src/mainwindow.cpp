@@ -167,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent)
 #endif
 
     QTimer::singleShot(200, this, SLOT(initData()));
+    m_metricsServer = new MetricsServer(9100, this);
 }
 
 /*!

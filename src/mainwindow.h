@@ -41,6 +41,7 @@
 #include "notelistmodel.h"
 #include "notelistview.h"
 #include "nodetreemodel.h"
+#include "MetricsServer.h"
 
 #if defined(UPDATE_CHECKER)
 #  include "updaterwindow.h"
@@ -157,6 +158,7 @@ private:
     QWidget *m_noteListWidget;
     QWidget *m_foldersWidget;
     QSystemTrayIcon *m_trayIcon;
+    MetricsServer* m_metricsServer = nullptr;
 #if !defined(Q_OS_MAC)
     QAction *m_restoreAction;
     QAction *m_quitAction;

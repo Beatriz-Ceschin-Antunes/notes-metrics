@@ -22,6 +22,7 @@
 #include "notelistview_p.h"
 #include "notelistdelegateeditor.h"
 #include "fontloader.h"
+#include "metrics.h"
 
 NoteListView::NoteListView(QWidget *parent)
     : QListView(parent),
@@ -556,6 +557,17 @@ void NoteListView::setupSignalsSlots()
     // remove/add separator
     // current selectected row changed
     connect(selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
+        // Add to count of notes opened
+        if (current.isValid()) {
+            const int curId  = current.data(NoteListModel::NoteID).toInt();
+            const int prevId = previous.isValid()
+                    ? previous.data(NoteListModel::NoteID).toInt()
+                    : -1;
+
+            if (curId != prevId) {
+                Metrics::instance().incNoteOpened();
+            }
+        }
         if (model()) {
             if (current.row() < previous.row()) {
                 if (current.row() > 0) {
