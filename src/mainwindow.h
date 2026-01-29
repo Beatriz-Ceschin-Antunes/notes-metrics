@@ -253,7 +253,7 @@ private:
     QMenu m_mainMenu;
     QAction *m_buyOrManageSubscriptionAction;
     QAction *m_hideToTrayAction;
-    QAction *collectUsageMetricsAction;
+    QAction *m_collectUsageMetricsAction;
     QTimer m_checkUpdatesTimer;
 
     bool alreadyAppliedFormat(const QString &formatChars);
@@ -265,6 +265,7 @@ private:
     void setupSplitter();
     void setupButtons();
     void setupSignalsSlots();
+    void visualizeMetrics();
 #if defined(UPDATE_CHECKER)
     void autoCheckForUpdates();
 #endif

@@ -134,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_mainMenu(nullptr),
       m_buyOrManageSubscriptionAction(new QAction(this)),
       m_hideToTrayAction(nullptr),
-      collectUsageMetricsAction(nullptr),
+      m_collectUsageMetricsAction(nullptr),
       m_checkUpdatesTimer(new QTimer(this))
 {
     m_ui->setupUi(this);
@@ -155,6 +155,7 @@ MainWindow::MainWindow(QWidget *parent)
     restoreStates();
     setupButtons();
     setupSignalsSlots();
+    visualizeMetrics();
 #if defined(UPDATE_CHECKER)
     autoCheckForUpdates();
     connect(&m_checkUpdatesTimer, &QTimer::timeout, this, &MainWindow::autoCheckForUpdates);
@@ -1659,7 +1660,7 @@ void MainWindow::restoreStates()
     }
 
     setCollection(m_settingsDatabase->value(QStringLiteral("collectUsageMetrics"), true).toBool());
-    collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
+    m_collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
 
     if (m_settingsDatabase->value(QStringLiteral("windowGeometry"), "NULL") != "NULL")
         restoreGeometry(m_settingsDatabase->value(QStringLiteral("windowGeometry")).toByteArray());
@@ -2025,13 +2026,17 @@ void MainWindow::setupGlobalSettingsMenu()
     autostartAction->setChecked(m_autostart.isAutostart());
 
     // Collect usage metrics toggle
-    collectUsageMetricsAction = metricsMenu->addAction(tr("Collect &usage metrics"));
-    collectUsageMetricsAction->setCheckable(true);
+    m_collectUsageMetricsAction = metricsMenu->addAction(tr("Collect &usage metrics"));
+    m_collectUsageMetricsAction->setCheckable(true);
 
-    connect(collectUsageMetricsAction, &QAction::toggled, this, [this](bool checked) {
+    connect(m_collectUsageMetricsAction, &QAction::toggled, this, [this](bool checked) {
         m_collectUsageMetrics = checked;
         m_settingsDatabase->setValue(QStringLiteral("collectUsageMetrics"), checked); // update value
     });
+
+    // Visualize metrics
+    QAction *visualizeMetricsAction = metricsMenu->addAction(tr("&Visualize metrics"));
+    connect(visualizeMetricsAction, &QAction::triggered, this, &MainWindow::visualizeMetrics);
 
     // hide to tray
     m_hideToTrayAction = m_mainMenu.addAction(tr("&Hide to tray"));
@@ -4080,4 +4085,9 @@ bool MainWindow::isTitleBar(int x, int y) const
     }
 
     return (adjustedX >= 0 && adjustedX <= titleBarWidth && adjustedY >= 0 && adjustedY <= titleBarHeight);
+}
+
+void MainWindow::visualizeMetrics()
+{
+    // implement visualize metrics logic
 }
