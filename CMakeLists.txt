@@ -354,7 +354,8 @@ if(QT_VERSION VERSION_GREATER_EQUAL 6.2)
     "/qt/qml"
     QML_FILES
     ${QML_FILES}
-    NO_RESOURCE_TARGET_PATH)
+    NO_RESOURCE_TARGET_PATH
+    SOURCES src/metrics.h src/metrics.cpp)
 endif()
 
 target_link_libraries(
