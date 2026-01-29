@@ -3,7 +3,6 @@
 #include "Metrics.h"
 
 class MetricsServer : public QObject {
-    Q_OBJECT
 public:
     MetricsServer(QObject* parent = nullptr) : QObject(parent) {
         connect(&server, &QTcpServer::newConnection, this, [this]() {
