@@ -156,7 +156,6 @@ MainWindow::MainWindow(QWidget *parent)
     restoreStates();
     setupButtons();
     setupSignalsSlots();
-    visualizeMetrics();
 #if defined(UPDATE_CHECKER)
     autoCheckForUpdates();
     connect(&m_checkUpdatesTimer, &QTimer::timeout, this, &MainWindow::autoCheckForUpdates);
@@ -4092,5 +4091,5 @@ bool MainWindow::isTitleBar(int x, int y) const
 
 void MainWindow::visualizeMetrics()
 {
-    // implement visualize metrics logic
+    QDesktopServices::openUrl(QUrl(QStringLiteral("http://localhost:3000/d/adlrrrp/notes-app-usage-metrics?orgId=1&from=now-30m&to=now&timezone=browser")));
 }

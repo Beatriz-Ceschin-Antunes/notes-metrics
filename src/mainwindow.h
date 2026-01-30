@@ -36,6 +36,8 @@
 #include <QNetworkReply>
 #include <QByteArray>
 #include <QQmlApplicationEngine>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "nodedata.h"
 #include "notelistmodel.h"
