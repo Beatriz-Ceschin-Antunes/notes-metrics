@@ -10,7 +10,10 @@ Metrics& Metrics::instance() {
  * Increments count as new note is opened.
  */
 void Metrics::incNoteOpened() {
-    m_noteOpenTotal.fetch_add(1, std::memory_order_relaxed);
+    if (!enabled)
+        return;
+
+    m_noteOpenTotal++;
 }
 
 /*!
@@ -25,4 +28,20 @@ QString Metrics::toPrometheusText() const {
     out += "# TYPE note_open_total counter\n";
     out += "note_open_total " + QString::number(count) + "\n";
     return out;
+}
+
+/*!
+ * \brief Metrics::setEnabled(bool enabled)
+ * Sets value for enabled flag.
+ */
+void Metrics::setEnabled(bool m_enabled){
+    enabled = m_enabled;
+}
+
+/*!
+ * \brief Metrics::isEnabled()
+ * Retrives value for enabled flag.
+ */
+bool Metrics::isEnabled() const{
+    return enabled;
 }

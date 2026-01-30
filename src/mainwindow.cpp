@@ -16,6 +16,7 @@
 #include "editorsettingsoptions.h"
 #include "fontloader.h"
 #include <utils.h>
+#include <metrics.h>
 
 #include <QScrollBar>
 #include <QShortcut>
@@ -2033,6 +2034,7 @@ void MainWindow::setupGlobalSettingsMenu()
     connect(m_collectUsageMetricsAction, &QAction::toggled, this, [this](bool checked) {
         m_collectUsageMetrics = checked;
         m_settingsDatabase->setValue(QStringLiteral("collectUsageMetrics"), checked); // update value
+        Metrics::instance().setEnabled(checked);
     });
 
     // Visualize metrics
