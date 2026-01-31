@@ -2406,6 +2406,8 @@ void MainWindow::createNewNote()
         }
         // insert the new note to NoteListModel
         newNoteIndex = m_listModel->insertNote(tmpNote, 0);
+        // increment metrics count for note created
+        Metrics::instance().incNoteCreated();
 
         // update the editor
         m_noteEditorLogic->showNotesInEditor({ tmpNote });

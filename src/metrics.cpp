@@ -12,6 +12,13 @@ Metrics::Metrics() {
             MetricType::Counter,
             &m_noteOpenTotal
     });
+
+    m_metrics.push_back({
+            "notes_created_total",
+            "Total number of notes created",
+            MetricType::Counter,
+            &m_noteCreated
+    });
 }
 
 /*!
@@ -23,6 +30,17 @@ void Metrics::incNoteOpened() {
         return;
 
     m_noteOpenTotal++;
+}
+
+/*!
+ * \brief Metrics::incNoteCreated()
+ * Increments count as new note is created.
+ */
+void Metrics::incNoteCreated() {
+    if (!enabled)
+        return;
+
+    m_noteCreated++;
 }
 
 /*!

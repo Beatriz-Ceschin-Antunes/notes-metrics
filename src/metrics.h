@@ -26,12 +26,14 @@ public:
     bool isEnabled() const;
 
     void incNoteOpened();
+    void incNoteCreated();
     QString toPrometheusText() const;
 
 private:
     bool enabled = true;
     std::vector<Metric> m_metrics;
-    std::atomic<quint64> m_noteOpenTotal{0};
+    std::atomic<quint64> m_noteOpenTotal{0}; // number of distinct notes opened
+    std::atomic<quint64> m_noteCreated{0}; // number of notes created in a session
 };
 
 #endif // METRICS_H
