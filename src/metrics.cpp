@@ -5,6 +5,15 @@ Metrics& Metrics::instance() {
     return inst;
 }
 
+Metrics::Metrics() {
+    m_metrics.push_back({
+            "note_open_total",
+            "Total number of note open events",
+            MetricType::Counter,
+            &m_noteOpenTotal
+    });
+}
+
 /*!
  * \brief Metrics::incNoteOpened()
  * Increments count as new note is opened.
@@ -21,12 +30,25 @@ void Metrics::incNoteOpened() {
  * Exposes metrics to Prometheus.
  */
 QString Metrics::toPrometheusText() const {
-    const quint64 count = m_noteOpenTotal.load(std::memory_order_relaxed);
-
     QString out;
-    out += "# HELP note_open_total Total number of note open events\n";
-    out += "# TYPE note_open_total counter\n";
-    out += "note_open_total " + QString::number(count) + "\n";
+
+    for (const auto& metric : m_metrics) {
+        out += "# HELP " + metric.name + " " + metric.help + "\n";
+
+        switch (metric.type) {
+        case MetricType::Counter:
+            out += "# TYPE " + metric.name + " counter\n";
+            break;
+        case MetricType::Gauge:
+            out += "# TYPE " + metric.name + " gauge\n";
+            break;
+        }
+
+        out += metric.name + " "
+                + QString::number(metric.value->load(std::memory_order_relaxed))
+                + "\n";
+    }
+
     return out;
 }
 
