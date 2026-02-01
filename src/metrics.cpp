@@ -19,6 +19,13 @@ Metrics::Metrics() {
             MetricType::Counter,
             &m_noteCreated
     });
+
+    m_metrics.push_back({
+            "session_duration_seconds_total",
+            "Total session duration in seconds",
+            MetricType::Counter,
+            &m_sessionDurationSecondsTotal
+    });
 }
 
 /*!
@@ -41,6 +48,46 @@ void Metrics::incNoteCreated() {
         return;
 
     m_noteCreated++;
+}
+
+/*!
+ * \brief Metrics::incSessionsTotal()
+ * Increments count as new session is launched.
+ */
+void Metrics::incSessionsTotal() {
+    if (!enabled)
+        return;
+
+    m_sessionsTotal++;
+}
+
+/*!
+ * \brief Metrics::addSessionDurationSeconds(quint64 seconds)
+ * Increments duration total as session duration is recorded.
+ */
+void Metrics::addSessionDurationSeconds(quint64 seconds) {
+    if (!enabled)
+        return;
+
+    m_sessionDurationSecondsTotal += seconds;
+}
+
+/*!
+ * \brief Metrics::loadSessionData(QSettings db)
+ * Load data for session duration.
+ */
+void Metrics::loadSessionData(QSettings *db) {
+    m_sessionDurationSecondsTotal.store(db->value(QStringLiteral("metrics/sessionDurationSecondsTotal"),0).toULongLong(),std::memory_order_relaxed);
+}
+
+/*!
+ * \brief Metrics::storeSessionData(QSettings db)
+ * Stores data for session duration.
+ */
+void Metrics::storeSessionData(QSettings *db) {
+    db->setValue(QStringLiteral("metrics/sessionDurationSecondsTotal"),QVariant::fromValue<qulonglong>(m_sessionDurationSecondsTotal.load(std::memory_order_relaxed)));
+
+    db->sync();
 }
 
 /*!

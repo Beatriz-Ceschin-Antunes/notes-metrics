@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <QString>
+#include <QSettings>
 
 enum class MetricType {
     Counter,
@@ -27,6 +28,10 @@ public:
 
     void incNoteOpened();
     void incNoteCreated();
+    void incSessionsTotal();
+    void addSessionDurationSeconds(quint64 seconds);
+    void loadSessionData(QSettings *db);
+    void storeSessionData(QSettings *db);
     QString toPrometheusText() const;
 
 private:
@@ -34,6 +39,8 @@ private:
     std::vector<Metric> m_metrics;
     std::atomic<quint64> m_noteOpenTotal{0}; // number of distinct notes opened
     std::atomic<quint64> m_noteCreated{0}; // number of notes created in a session
+    std::atomic<quint64> m_sessionsTotal{0}; // total number of sessions
+    std::atomic<quint64> m_sessionDurationSecondsTotal{0}; // duration of each session
 };
 
 #endif // METRICS_H

@@ -209,6 +209,9 @@ void MainWindow::initData()
         setMainWindowVisibility(false);
     }
 
+    // Start session timer
+    m_sessionTimer.start();
+
     // init tree view
     emit requestNodesTree();
 }
@@ -876,6 +879,13 @@ void MainWindow::setupSignalsSlots()
         }
     });
 #endif
+    // Collect metrics on session duration when quitting application
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [this]() {
+        quint64 durationSeconds = m_sessionTimer.elapsed() / 1000;
+        Metrics::instance().addSessionDurationSeconds(durationSeconds);
+        Metrics::instance().storeSessionData(m_settingsDatabase);
+    });
+
 }
 
 /*!
@@ -1662,6 +1672,7 @@ void MainWindow::restoreStates()
 
     setCollection(m_settingsDatabase->value(QStringLiteral("collectUsageMetrics"), true).toBool());
     m_collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
+    Metrics::instance().loadSessionData(m_settingsDatabase); // have session data persist
 
     if (m_settingsDatabase->value(QStringLiteral("windowGeometry"), "NULL") != "NULL")
         restoreGeometry(m_settingsDatabase->value(QStringLiteral("windowGeometry")).toByteArray());

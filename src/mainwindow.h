@@ -38,6 +38,7 @@
 #include <QQmlApplicationEngine>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QElapsedTimer>
 
 #include "nodedata.h"
 #include "notelistmodel.h"
@@ -161,6 +162,8 @@ private:
     QWidget *m_foldersWidget;
     QSystemTrayIcon *m_trayIcon;
     MetricsServer* m_metricsServer = nullptr;
+    QElapsedTimer m_sessionTimer;
+
 #if !defined(Q_OS_MAC)
     QAction *m_restoreAction;
     QAction *m_quitAction;
