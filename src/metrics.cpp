@@ -26,6 +26,13 @@ Metrics::Metrics() {
             MetricType::Counter,
             &m_sessionDurationSecondsTotal
     });
+
+    m_metrics.push_back({
+            "sessions_total",
+            "Total number of application sessions",
+            MetricType::Counter,
+            &m_sessionsTotal
+    });
 }
 
 /*!
@@ -74,18 +81,20 @@ void Metrics::addSessionDurationSeconds(quint64 seconds) {
 
 /*!
  * \brief Metrics::loadSessionData(QSettings db)
- * Load data for session duration.
+ * Load data for session duration and count.
  */
 void Metrics::loadSessionData(QSettings *db) {
     m_sessionDurationSecondsTotal.store(db->value(QStringLiteral("metrics/sessionDurationSecondsTotal"),0).toULongLong(),std::memory_order_relaxed);
+    m_sessionsTotal.store(db->value(QStringLiteral("metrics/sessionsTotal"), 0).toULongLong(),std::memory_order_relaxed);
 }
 
 /*!
  * \brief Metrics::storeSessionData(QSettings db)
- * Stores data for session duration.
+ * Stores data for session duration and count.
  */
 void Metrics::storeSessionData(QSettings *db) {
     db->setValue(QStringLiteral("metrics/sessionDurationSecondsTotal"),QVariant::fromValue<qulonglong>(m_sessionDurationSecondsTotal.load(std::memory_order_relaxed)));
+    db->setValue(QStringLiteral("metrics/sessionsTotal"),QVariant::fromValue<qulonglong>(m_sessionsTotal.load(std::memory_order_relaxed)));
 
     db->sync();
 }

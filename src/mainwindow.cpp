@@ -1673,6 +1673,8 @@ void MainWindow::restoreStates()
     setCollection(m_settingsDatabase->value(QStringLiteral("collectUsageMetrics"), true).toBool());
     m_collectUsageMetricsAction->setChecked(m_collectUsageMetrics);
     Metrics::instance().loadSessionData(m_settingsDatabase); // have session data persist
+    // Register new session
+    Metrics::instance().incSessionsTotal();
 
     if (m_settingsDatabase->value(QStringLiteral("windowGeometry"), "NULL") != "NULL")
         restoreGeometry(m_settingsDatabase->value(QStringLiteral("windowGeometry")).toByteArray());
