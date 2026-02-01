@@ -6,6 +6,7 @@
 #include "taglistmodel.h"
 #include "tagpool.h"
 #include "taglistdelegate.h"
+#include "metrics.h"
 #include <QScrollBar>
 #include <QLabel>
 #include <QLineEdit>
@@ -692,6 +693,7 @@ int NoteEditorLogic::currentEditingNoteId() const
 void NoteEditorLogic::saveNoteToDB()
 {
     if (currentEditingNoteId() != INVALID_NODE_ID && m_isContentModified && !m_currentNotes[0].isTempNote()) {
+        Metrics::instance().incNotesEdits(); // save data to metrics of notes edits
         emit requestCreateUpdateNote(m_currentNotes[0]);
         m_isContentModified = false;
     }

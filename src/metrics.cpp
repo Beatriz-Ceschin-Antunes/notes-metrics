@@ -33,6 +33,13 @@ Metrics::Metrics() {
             MetricType::Counter,
             &m_sessionsTotal
     });
+
+    m_metrics.push_back({
+            "edits_total",
+            "Total number saved edits",
+            MetricType::Counter,
+            &m_editsTotal
+    });
 }
 
 /*!
@@ -66,6 +73,17 @@ void Metrics::incSessionsTotal() {
         return;
 
     m_sessionsTotal++;
+}
+
+/*!
+ * \brief Metrics::incNotesEdits()
+ * Increments count when edits are made and saved.
+ */
+void Metrics::incNotesEdits() {
+    if (!enabled)
+        return;
+
+    m_editsTotal++;
 }
 
 /*!
