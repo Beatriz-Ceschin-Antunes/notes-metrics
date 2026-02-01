@@ -7,11 +7,14 @@ This repository is a fork of [nuttyartist/notes](https://github.com/nuttyartist/
 - Exposed collected metrics in Prometheus-compatible format.
 - Linked the "Visualize metrics" menu action to a Grafana dashboard for metrics visualization.
 
+![Forked Notes App](docs/screenshots/notes-metrics-menu.png)
+*Notes App Metrics Menu*
+
 ### Metrics Collected
 - note_open_total - Total number of note open events
 - notes_created_total - Total number of notes created
-- session_duration_seconds_total - Total session duration in seconds
-- sessions_total - Total number of application sessions started
+- session_duration_seconds_total - Total session duration
+- sessions_total - Total number of sessions started
 - edits_total - Total number of saved edits
 
 ### Metrics Exposure
