@@ -1,3 +1,31 @@
+# Fork Notice
+This repository is a fork of [nuttyartist/notes](https://github.com/nuttyartist/notes). It was modified to support usage metrics collection and Grafana-based visualization. 
+
+## Key Changes
+- Added Metrics menu with "Collect usage metrics" toggle and "Visualize metrics" action.
+- Implemented in-app usage metrics collection.
+- Exposed collected metrics in Prometheus-compatible format.
+- Linked the "Visualize metrics" menu action to a Grafana dashboard for metrics visualization.
+
+### Metrics Collected
+- note_open_total - Total number of note open events
+- notes_created_total - Total number of notes created
+- session_duration_seconds_total - Total session duration in seconds
+- sessions_total - Total number of application sessions started
+- edits_total - Total number of saved edits
+
+### Metrics Exposure
+Metrics are exposed via an internal endpoint in Prometheus text format. Prometheus scrapes this endpoint to collect data.
+
+### Grafana Dashboard
+Collected metrics are visualized in a Grafana dashboard to highlight usage patterns over time, providing insight into:
+
+- Notes application activity (creation, opening, and editing of notes)
+- Session activity (session count and duration)
+- Derived metrics such as notes opened per session
+
+Original README continues below.
+
 # Notes
 
 [![Discord](https://dcbadge.vercel.app/api/server/RP6ReXRn5j?style=flat)](https://discord.gg/RP6ReXRn5j)
