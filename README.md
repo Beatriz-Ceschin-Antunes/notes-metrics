@@ -24,6 +24,12 @@ Collected metrics are visualized in a Grafana dashboard to highlight usage patte
 - Session activity (session count and duration)
 - Derived metrics such as notes opened per session
 
+![Notes Activity](docs/screenshots/notes-activity-panels.png)
+*Grafana panels showing note creation, opening, and editing activity over time.*
+
+![Session Activity](docs/screenshots/session-activity-panels.png)
+*Grafana panels showing session count and duration.*
+
 Original README continues below.
 
 # Notes
